@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import sessionmaker
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -40,9 +40,19 @@ class RegisterForm(FlaskForm):
     ])
     submit = SubmitField('Sign Up')
 
-@app.route('/')
+class LoginForm(FlaskForm):
+    username = StringField('Username')
+    password = PasswordField('Password')
+    remember = BooleanField('Remember me')
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        return '<h1>Username: {}, Password: {}, Remember: {}</h1>'.format(form.username.data, form.password.data, form.remember.data)
+
+    return render_template('index.html', form=form)
 
 @app.route('/profile')
 def profile():
