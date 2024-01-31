@@ -7,6 +7,7 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, logout_user
 
 app = Flask(__name__)
 photos = UploadSet('photos', IMAGES)
@@ -19,12 +20,18 @@ app.config['SECRET_KEY'] = 'ksdlfkdsofidsithnaljnfadksjhfdskjfbnjewrhewuirhfsenf
 configure_uploads(app, photos)
 db = SQLAlchemy(app)
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     username = db.Column(db.String(30), unique=True)
     image = db.Column(db.String(100))  # Add column for image path
     password = db.Column(db.String(50))
+
+login_manager = LoginManager(app)  # Initialize LoginManager
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 def create_session():
     engine = db.engine  # Access the engine within context
@@ -45,7 +52,7 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password')
     remember = BooleanField('Remember me')
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
     form = LoginForm()
 
@@ -53,6 +60,25 @@ def index():
         return '<h1>Username: {}, Password: {}, Remember: {}</h1>'.format(form.username.data, form.password.data, form.remember.data)
 
     return render_template('index.html', form=form)
+
+@app.route('/login', methods=['POST'])
+def login():
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+
+        if not user:
+            return 'Login failed'
+
+        if check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
+
+            return redirect(url_for('profile'))
+
+        return 'Login failed'
+
+    return redirect(url_for('index'))
 
 @app.route('/profile')
 def profile():
