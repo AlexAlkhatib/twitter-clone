@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, InputRequired, Length
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, logout_user
@@ -39,46 +39,43 @@ def create_session():
     return Session()
 
 class RegisterForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    image = FileField('Profile Image', validators=[
-        FileAllowed(photos, 'Images only!')
-    ])
-    submit = SubmitField('Sign Up')
+    name = StringField('Full name', validators=[InputRequired('A full name is required.'), Length(max=100, message='Your name can\'t be more than 100 characters.')])
+    username = StringField('Username', validators=[InputRequired('Username is required.'), Length(max=30, message='Your username is too many characters.')])
+    password = PasswordField('Password', validators=[InputRequired('A password is required.')])
+    image = FileField(validators=[FileAllowed(IMAGES, 'Only images are accepted.')])
 
 class LoginForm(FlaskForm):
-    username = StringField('Username')
-    password = PasswordField('Password')
+    username = StringField('Username', validators=[InputRequired('Username is required.'), Length(max=30, message='Your username is too many characters.')])
+    password = PasswordField('Password', validators=[InputRequired('A password is required.')])
     remember = BooleanField('Remember me')
 
 @app.route('/')
 def index():
     form = LoginForm()
 
-    if form.validate_on_submit():
-        return '<h1>Username: {}, Password: {}, Remember: {}</h1>'.format(form.username.data, form.password.data, form.remember.data)
-
     return render_template('index.html', form=form)
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'GET':
+        return redirect(url_for('index'))
+
     form = LoginForm()
 
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
 
         if not user:
-            return 'Login failed'
+            return render_template('index.html', form=form, message='Login Failed!')
 
         if check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
 
             return redirect(url_for('profile'))
 
-        return 'Login failed'
+        return render_template('index.html', form=form, message='Login Failed!')
 
-    return redirect(url_for('index'))
+    return render_template('index.html', form=form)
 
 @app.route('/profile')
 def profile():
