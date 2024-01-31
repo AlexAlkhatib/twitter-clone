@@ -51,7 +51,7 @@ def register():
 
         # Save the uploaded image
         filename = photos.save(form.image.data)
-        image_url = photos.url(filename)
+        image_url = url_for('uploaded_file', filename=filename)
 
         new_user = User(
             name=form.name.data,
@@ -62,8 +62,18 @@ def register():
         session.add(new_user)
         session.commit()
 
-        return '<h1>Name: {}, Username: {}, Password: {}, Image URL: {}</h1>'.format(form.name.data, form.username.data, form.password.data, image_url)
+        # Redirect to a new template that displays the image URL
+        return redirect(url_for('show_image_url', image_url=image_url))
+
     return render_template('register.html', form=form)
+
+@app.route('/image_url/<path:image_url>')
+def show_image_url(image_url):
+    return render_template('image_url.html', image_url=image_url)
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOADED_PHOTOS_DEST'], filename)
 
 if __name__ == '__main__':
     app.run(debug=True)
