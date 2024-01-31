@@ -5,7 +5,6 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
 from flask_uploads import UploadSet, configure_uploads, IMAGES
-from flask_wtf.file import FileField, FileAllowed
 from forms import RegisterForm
 
 app = Flask(__name__)
@@ -62,14 +61,14 @@ def register():
         session.add(new_user)
         session.commit()
 
-        # Redirect to a new template that displays the image URL
-        return redirect(url_for('show_image_url', image_url=image_url))
+        # Render the template directly
+        return render_template('registration_result.html',
+                               name=form.name.data,
+                               username=form.username.data,
+                               password=form.password.data,
+                               image_url=image_url)
 
     return render_template('register.html', form=form)
-
-@app.route('/image_url/<path:image_url>')
-def show_image_url(image_url):
-    return render_template('image_url.html', image_url=image_url)
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):

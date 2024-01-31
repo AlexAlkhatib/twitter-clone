@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registration Result</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bs/css/united.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h2>Registration Successful!</h2>
+    
+    <dl class="row">
+        <dt class="col-sm-3">Name:</dt>
+        <dd class="col-sm-9">{{ name }}</dd>
+
+        <dt class="col-sm-3">Username:</dt>
+        <dd class="col-sm-9">{{ username }}</dd>
+
+        <dt class="col-sm-3">Password:</dt>
+        <dd class="col-sm-9">{{ password }}</dd>
+
+        <dt class="col-sm-3">Image URL:</dt>
+        <dd class="col-sm-9"><img src="{{ image_url }}" alt="User Image"></dd>
+    </dl>
+    
+    <p><a href="{{ url_for('index') }}">Go back to home page</a></p>
+</div>
+
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='bs/js/jquery.min.js') }}"></script>
+<!-- Bootstrap JavaScript -->
+<script src="{{ url_for('static', filename='bs/js/bootstrap.min.js') }}"></script>
+
+</body>
+</html>
