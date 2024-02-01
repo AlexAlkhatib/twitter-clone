@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, send_from_
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import InputRequired, Length
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -35,6 +35,9 @@ class Tweet(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     text = db.Column(db.String(140))
     date_created = db.Column(db.DateTime)
+
+class TweetForm(FlaskForm):
+    text = TextAreaField('Message', validators=[InputRequired('Message is required.')])
 
 login_manager = LoginManager(app)  # Initialize LoginManager
 login_manager.login_view = 'login'
@@ -98,7 +101,23 @@ def logout():
 
 @app.route('/timeline')
 def timeline():
-    return render_template('timeline.html')
+    form = TweetForm()
+
+    return render_template('timeline.html', form=form)
+
+@app.route('/post_tweet', methods=['POST'])
+@login_required
+def post_tweet():
+    form = TweetForm()
+
+    if form.validate():
+        tweet = Tweet(user_id=current_user.id, text=form.text.data, date_created=datetime.now())
+        db.session.add(tweet)
+        db.session.commit()
+
+        return redirect(url_for('timeline'))
+
+    return 'Something went wrong.'
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
