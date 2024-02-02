@@ -119,17 +119,19 @@ def profile(username):
     tweets = Tweet.query.filter_by(user=user).order_by(Tweet.date_created.desc()).all()
 
     current_time = datetime.now()
-    
+
     followed_by = user.followed_by.all()
-    
+
     display_follow = True
-    
+
     if current_user == user:
         display_follow = False
-    elif current_user in followed_by: 
+    elif current_user in followed_by:
         display_follow = False
 
-    return render_template('profile.html', current_user=user, tweets=tweets, current_time=current_time, followed_by=followed_by, display_follow=display_follow)
+    who_to_watch = User.query.filter(User.id != user.id).order_by(db.func.random()).limit(4).all()
+
+    return render_template('profile.html', current_user=user, tweets=tweets, current_time=current_time, followed_by=followed_by, display_follow=display_follow, who_to_watch=who_to_watch)
 
 @app.route('/logout')
 @login_required
@@ -154,12 +156,12 @@ def timeline(username):
         user = current_user
         tweets = Tweet.query.join(followers, (followers.c.followee_id == Tweet.user_id)).filter(followers.c.follower_id == current_user.id).order_by(Tweet.date_created.desc()).all()
         total_tweets = Tweet.query.filter_by(user=user).order_by(Tweet.date_created.desc()).count() 
-    
-    
 
     current_time = datetime.now()
 
-    return render_template('timeline.html', form=form, tweets=tweets, current_time=current_time, current_user=user, total_tweets=total_tweets)
+    who_to_watch = User.query.filter(User.id != user.id).order_by(db.func.random()).limit(4).all()
+
+    return render_template('timeline.html', form=form, tweets=tweets, current_time=current_time, current_user=user, total_tweets=total_tweets, who_to_watch=who_to_watch)
 
 @app.route('/post_tweet', methods=['POST'])
 @login_required
