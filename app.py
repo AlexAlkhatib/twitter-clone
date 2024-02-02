@@ -200,6 +200,17 @@ def register():
 
     return render_template('register.html', form=form)
 
+@app.route('/follow/<username>')
+@login_required
+def follow(username):
+    user_to_follow = User.query.filter_by(username=username).first()
+
+    current_user.following.append(user_to_follow)
+
+    db.session.commit()
+
+    return redirect(url_for('profile'))
+
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOADED_PHOTOS_DEST'], filename)
