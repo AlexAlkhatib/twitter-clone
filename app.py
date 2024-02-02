@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory, abort
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory, abort, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
@@ -178,6 +178,36 @@ def post_tweet():
         return redirect(url_for('timeline'))
 
     return 'Something went wrong.'
+
+# Add route to update tweet
+@app.route('/update_tweet/<int:tweet_id>', methods=['GET', 'POST'])
+@login_required
+def update_tweet(tweet_id):
+    tweet = Tweet.query.get_or_404(tweet_id)
+    form = TweetForm()
+
+    if form.validate_on_submit():
+        tweet.text = form.text.data
+        db.session.commit()
+        flash('Your tweet has been updated!', 'success')
+        return redirect(url_for('profile'))
+
+    return render_template('update_tweet.html', form=form, tweet_id=tweet_id)
+
+# Add route to delete tweet
+@app.route('/delete_tweet/<int:tweet_id>', methods=['POST', 'GET'])
+@login_required
+def delete_tweet(tweet_id):
+    tweet = Tweet.query.get_or_404(tweet_id)
+
+    # Check if the current user is the owner of the tweet
+    if tweet.user != current_user:
+        abort(403)  # Forbidden
+
+    db.session.delete(tweet)
+    db.session.commit()
+    flash('Your tweet has been deleted!', 'success')
+    return redirect(url_for('profile'))
 
 @app.template_filter('time_since')
 def time_since(delta):
