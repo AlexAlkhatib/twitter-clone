@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
@@ -101,17 +101,27 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@app.route('/timeline')
-def timeline():
+@app.route('/timeline', defaults={'username' : None})
+@app.route('/timeline/<username>')
+def timeline(username):
     form = TweetForm()
 
-    user_id = current_user.id
+    if username:
+        user = User.query.filter_by(username=username).first()
+        if not user:
+            abort(404)
+
+        user_id = user.id
+    else:
+        user = current_user
+        user_id = current_user.id
+
     tweets = Tweet.query.filter_by(user_id=user_id).order_by(Tweet.date_created.desc()).all()
     total_tweets = len(tweets)
 
     current_time = datetime.now()
 
-    return render_template('timeline.html', form=form, tweets=tweets, current_time=current_time, current_user=current_user, total_tweets=total_tweets)
+    return render_template('timeline.html', form=form, tweets=tweets, current_time=current_time, current_user=user, total_tweets=total_tweets)
 
 @app.route('/post_tweet', methods=['POST'])
 @login_required
