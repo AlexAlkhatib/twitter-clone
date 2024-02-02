@@ -41,6 +41,11 @@ class User(UserMixin, db.Model):
         primaryjoin=(followers.c.follower_id == id),
         secondaryjoin=(followers.c.followee_id == id),
         backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
+    
+    followed_by = db.relationship('User', secondary=followers, 
+    primaryjoin=(followers.c.followee_id == id),
+    secondaryjoin=(followers.c.follower_id == id),
+    backref=db.backref('followees', lazy='dynamic'), lazy='dynamic')
 
 class Tweet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -114,8 +119,10 @@ def profile(username):
     tweets = Tweet.query.filter_by(user=user).order_by(Tweet.date_created.desc()).all()
 
     current_time = datetime.now()
+    
+    followed_by = user.followed_by.all()
 
-    return render_template('profile.html', current_user=user, tweets=tweets, current_time=current_time)
+    return render_template('profile.html', current_user=user, tweets=tweets, current_time=current_time, followed_by=followed_by)
 
 @app.route('/logout')
 @login_required
