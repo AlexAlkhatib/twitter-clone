@@ -147,13 +147,15 @@ def timeline(username):
         if not user:
             abort(404)
 
-        user_id = user.id
+        tweets = Tweet.query.filter_by(user=user).order_by(Tweet.date_created.desc()).all()    
+        total_tweets = len(tweets)
+
     else:
         user = current_user
-        user_id = current_user.id
-
-    tweets = Tweet.query.filter_by(user_id=user_id).order_by(Tweet.date_created.desc()).all()
-    total_tweets = len(tweets)
+        tweets = Tweet.query.join(followers, (followers.c.followee_id == Tweet.user_id)).filter(followers.c.follower_id == current_user.id).order_by(Tweet.date_created.desc()).all()
+        total_tweets = Tweet.query.filter_by(user=user).order_by(Tweet.date_created.desc()).count() 
+    
+    
 
     current_time = datetime.now()
 
