@@ -22,15 +22,25 @@ configure_uploads(app, photos)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+followers = db.Table('follower',
+    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('followee_id', db.Integer, db.ForeignKey('user.id'))
+)
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
-    username = db.Column(db.String(30), unique=True)
-    image = db.Column(db.String(100))  # Add column for image path
+    username = db.Column(db.String(30))
+    image = db.Column(db.String(100))
     password = db.Column(db.String(50))
     join_date = db.Column(db.DateTime)
-    
+
     tweets = db.relationship('Tweet', backref='user', lazy='dynamic')
+
+    following = db.relationship('User', secondary=followers, 
+        primaryjoin=(followers.c.follower_id == id),
+        secondaryjoin=(followers.c.followee_id == id),
+        backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
 class Tweet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
