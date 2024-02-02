@@ -121,8 +121,15 @@ def profile(username):
     current_time = datetime.now()
     
     followed_by = user.followed_by.all()
+    
+    display_follow = True
+    
+    if current_user == user:
+        display_follow = False
+    elif current_user in followed_by: 
+        display_follow = False
 
-    return render_template('profile.html', current_user=user, tweets=tweets, current_time=current_time, followed_by=followed_by)
+    return render_template('profile.html', current_user=user, tweets=tweets, current_time=current_time, followed_by=followed_by, display_follow=display_follow)
 
 @app.route('/logout')
 @login_required

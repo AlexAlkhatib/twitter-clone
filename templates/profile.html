@@ -74,6 +74,11 @@
 								<i class="glyphicon glyphicon-calendar"></i> MEMBER SINCE: 
 								<strong class="pull-right">{{ current_user.join_date.strftime('%B %d, %Y') }}</strong>
 							</li>
+							{% if display_follow %}
+							<li class="list-group-item">
+								&nbsp; <strong class="pull-right"><a href="{{ url_for('follow', username=current_user.username) }}"> FOLLOW </a></strong>
+							</li>
+							{% endif %}
 							<li class="list-group-item">
 								<i class="glyphicon glyphicon-th-list"></i> FOLLOWERS COUNT: 
 								<strong class="pull-right">{{ followed_by|length }}</strong>
