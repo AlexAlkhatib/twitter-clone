@@ -6,6 +6,7 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextA
 from wtforms.validators import InputRequired, Length
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, logout_user
 from flask_migrate import Migrate
 from datetime import datetime

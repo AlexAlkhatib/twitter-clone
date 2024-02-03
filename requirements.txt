@@ -2,7 +2,7 @@ Flask
 Flask-SQLAlchemy
 Flask-WTF
 Flask-Uploads
-Werkzeug
+Werkzeug==2.0.2
 WTForms
 Flask-Login
 Flask-Migrate
