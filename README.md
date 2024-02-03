@@ -74,7 +74,7 @@ pip install -r requirements.txt
 ### 5. Exécution de l'Application
 - Dans le terminal, exécutez la commande suivante pour lancer l'application Flask:
 ```bash
-python app.py
+python app.py runserver
 ```
 - L'application AlecSync sera accessible à l'adresse suivante dans votre navigateur web: http://localhost:5000
 
@@ -88,3 +88,5 @@ python app.py
 - Vous pouvez personnaliser et étendre l'application en modifiant le code source selon vos besoins.
 - Explorez les fichiers Python dans le répertoire app pour comprendre la logique de l'application.
 - Les fichiers HTML dans le répertoire templates contiennent le code HTML généré dynamiquement à l'aide de Jinja2.
+
+Amusez-vous bien à utiliser AlecSync!
