@@ -9,12 +9,17 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, logout_user
 from flask_migrate import Migrate
 from datetime import datetime
+import os
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+db_file = os.path.join(basedir, 'engage.db')
 
 app = Flask(__name__)
 photos = UploadSet('photos', IMAGES)
 
 app.config['UPLOADED_PHOTOS_DEST'] = 'images'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/anasa/OneDrive/Bureau/twitter-clone/engage.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_file
 app.config['DEBUG'] = True
 app.config['SECRET_KEY'] = 'ksdlfkdsofidsithnaljnfadksjhfdskjfbnjewrhewuirhfsenfdsjkfhdksjhfdslfjasldkj'
 
