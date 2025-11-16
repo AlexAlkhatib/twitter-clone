@@ -1,92 +1,146 @@
-# Documentation du Projet AlecSync
+# **AlecSync — Plateforme Sociale Interactive**
 
-## Introduction
+**AlecSync** est une plateforme sociale interactive que j’ai développée dans un cadre **personnel**, afin d’explorer la création d’applications web full-stack permettant aux utilisateurs de partager du contenu, d’interagir entre eux et de suivre l’activité de leurs amis.
+Le projet met en pratique le développement backend avec **Flask**, la gestion de données avec **SQLAlchemy**, et l’intégration d’un frontend dynamique et responsive.
 
-AlecSync est une plateforme sociale innovante permettant aux utilisateurs de se connecter, de partager des messages et de suivre les activités de leurs amis. Cette documentation fournit un aperçu complet du projet AlecSync, y compris ses fonctionnalités, son architecture et ses dépendances.
 
-## Fonctionnalités Principales
+## 🎯 Objectifs du projet
 
-1. **Inscription et Connexion:**
-   - Les utilisateurs peuvent s'inscrire sur la plateforme en fournissant leur nom, nom d'utilisateur, mot de passe et une image de profil.
-   - Une fois inscrits, les utilisateurs peuvent se connecter en utilisant leur nom d'utilisateur et leur mot de passe.
+* Concevoir une **application web complète** (frontend + backend + base de données)
+* Mettre en place des fonctionnalités sociales modernes (timeline, follow system, interactions)
+* Structurer un backend sécurisé et robuste avec Flask
+* Créer une interface responsive intuitive avec Bootstrap
+* Manipuler une base relationnelle via SQLAlchemy
 
-2. **Profil Utilisateur:**
-   - Chaque utilisateur a un profil qui affiche des informations telles que son nom, son nom d'utilisateur, sa date d'adhésion, le nombre de followers, et une liste des personnes qu'il suit.
-   - Les utilisateurs peuvent également mettre à jour leur image de profil et leur mot de passe.
 
-3. **Timeline:**
-   - La timeline affiche les messages postés par l'utilisateur ainsi que ceux des personnes qu'il suit.
-   - Les utilisateurs peuvent poster de nouveaux messages, consulter les messages existants, et interagir avec eux en aimant ou en commentant.
+## 📱 Fonctionnalités principales
 
-4. **Suggestions de Suivi:**
-   - La plateforme suggère des utilisateurs à suivre en fonction des intérêts et des activités des utilisateurs actuels.
-   - Les suggestions sont basées sur des algorithmes de recommandation qui analysent les interactions précédentes et les intérêts communs.
+### 🔐 Inscription & Connexion
 
-## Architecture Technique
+* Création de compte avec image de profil
+* Authentification sécurisée
+* Hashing + salage des mots de passe (Werkzeug)
 
-1. **Frontend:**
-   - Le frontend de l'application est développé en utilisant HTML, CSS et JavaScript.
-   - Bootstrap est utilisé pour la mise en page et le style des composants frontend.
-   - Les modèles Jinja2 sont utilisés pour générer dynamiquement les pages HTML avec des données provenant du backend.
+### 👤 Profil Utilisateur
 
-2. **Backend:**
-   - Le backend de l'application est construit en utilisant le framework Flask de Python.
-   - Flask gère les routes, les requêtes HTTP, la logique métier et l'intégration avec la base de données.
-   - SQLAlchemy est utilisé comme ORM (Object-Relational Mapping) pour interagir avec la base de données SQLite.
+* Informations : nom, username, date d’adhésion, followers/following
+* Mise à jour de la photo de profil et du mot de passe
 
-3. **Base de Données:**
-   - La base de données SQLite est utilisée pour stocker les informations des utilisateurs, les messages, les relations de suivi, etc.
-   - Elle est gérée et manipulée à l'aide de SQLAlchemy, offrant ainsi une abstraction efficace pour les opérations de lecture et d'écriture.
+### 📰 Timeline (fil d’actualité)
 
-4. **Sécurité:**
-   - La sécurité de l'application est renforcée par l'utilisation de tokens CSRF (Cross-Site Request Forgery) pour prévenir les attaques de type CSRF.
-   - Les mots de passe des utilisateurs sont stockés de manière sécurisée en utilisant des techniques de hachage et de salage avec l'aide de la bibliothèque Werkzeug.
+* Messages de l’utilisateur + messages des comptes suivis
+* Création de nouveaux posts
+* Likes, commentaires, interactions
 
-## Dépendances du Projet
+### 🤝 Suggestions de Suivi
 
-1. Flask: Framework web léger pour le développement d'applications web en Python.
-2. SQLAlchemy: Bibliothèque ORM pour la gestion des bases de données relationnelles en Python.
-3. Bootstrap: Framework front-end pour la création de sites web et d'applications web responsives.
-4. Jinja2: Moteur de modèle pour la génération de contenu dynamique dans les applications web Flask.
-5. Werkzeug: Bibliothèque Python pour la gestion des mots de passe et la sécurité web.
+* Recommandations d'utilisateurs basées sur :
 
-## Guide de Démarrage Rapide pour AlecSync
+  * intérêts communs
+  * interactions précédentes
+  * réseau existant
 
-### 1. Configuration de l'Environnement
 
-Avant de commencer, assurez-vous d'avoir Python et pip installés sur votre système. Vous aurez également besoin d'un éditeur de texte ou d'un IDE pour modifier le code source.
+## 🧰 Stack Technique
 
-### 2. Téléchargement du Code Source
+### 🖥️ Frontend
 
-- Clonez ou téléchargez le code source de l'application AlecSync depuis le référentiel GitHub.
+* **HTML / CSS / JavaScript**
+* **Bootstrap** pour une interface responsive
+* **Jinja2** pour générer des templates dynamiques
 
-### 3. Installation des Dépendances
+### ⚙️ Backend
 
-- Ouvrez une fenêtre de terminal dans le répertoire du projet AlecSync.
-- Exécutez la commande suivante pour installer les dépendances requises:
+* **Flask** : gestion des routes, sessions, logique métier
+* Sécurisation via **tokens CSRF**
+* Système d’authentification robuste
+
+### 🗄️ Base de données
+
+* **SQLite** (simple, légère, intégrée)
+* **SQLAlchemy ORM** (modèles, relations, requêtes sécurisées)
+
+### 🔒 Sécurité
+
+* CSRF protection (WTForms / Flask-CSRF)
+* Hashing + salage des mots de passe (Werkzeug)
+* Gestion des sessions utilisateurs
+
+
+## 🧠 Compétences démontrées
+
+✔ Développement full-stack complet (front + back + base de données)
+✔ Gestion d’une architecture MVC dans Flask
+✔ Création d’un système d’authentification sécurisé
+✔ Développement d’une timeline interactive (logique backend + affichage dynamique)
+✔ Implémentation d’un système de relations sociales (followers/following)
+✔ Manipulation d'un ORM (SQLAlchemy)
+✔ Design responsive & UX avec Bootstrap
+✔ Structuration propre du code et gestion d’un projet complet
+
+Un recruteur verra immédiatement que tu maîtrises les fondamentaux web + backend Python avec de bonnes pratiques de sécurité.
+
+
+## 📂 Structure du projet
+
+```
+AlecSync/
+ ├── app/
+ │   ├── static/           # CSS, images, JS
+ │   ├── templates/        # Pages HTML Jinja2
+ │   ├── models.py         # Modèles SQLAlchemy
+ │   ├── routes.py         # Routes Flask
+ │   ├── forms.py          # Formulaires + validation
+ │   └── utils.py          # Fonctions utilitaires
+ ├── requirements.txt
+ ├── app.py                # Point d’entrée Flask
+ └── README.md
+```
+
+
+## 🚀 Guide de démarrage rapide
+
+### 1️⃣ Installer les dépendances
+
 ```bash
 pip install -r requirements.txt
 ```
-### 4. Configuration de la Base de Données
 
-- L'application utilise SQLite comme base de données par défaut. Aucune configuration supplémentaire n'est requise.
+### 2️⃣ Lancer l’application
 
-### 5. Exécution de l'Application
-- Dans le terminal, exécutez la commande suivante pour lancer l'application Flask:
 ```bash
-python app.py runserver
+python app.py
 ```
-- L'application AlecSync sera accessible à l'adresse suivante dans votre navigateur web: http://localhost:5000
 
-### 6. Utilisation de l'Application
-- Accédez à la page d'accueil de l'application dans votre navigateur.
-- Vous pouvez vous inscrire en fournissant vos informations personnelles ou vous connecter si vous avez déjà un compte.
-- Explorez les différentes fonctionnalités telles que la timeline, le profil utilisateur, les suggestions de suivi, etc.
-- Pour poster de nouveaux messages, cliquez sur "Post New Message" dans la section timeline.
+L’application sera disponible à l’adresse :
 
-### 7. Personnalisation et Développement
-- Vous pouvez personnaliser et étendre l'application en modifiant le code source selon vos besoins.
-- Explorez les fichiers Python dans le répertoire app pour comprendre la logique de l'application.
-- Les fichiers HTML dans le répertoire templates contiennent le code HTML généré dynamiquement à l'aide de Jinja2.
+👉 **[http://localhost:5000](http://localhost:5000)**
 
-Amusez-vous bien à utiliser AlecSync!
+### 3️⃣ Utiliser AlecSync
+
+* Créer un compte
+* Personnaliser son profil
+* Poster des messages
+* Suivre des utilisateurs
+* Voir la timeline et interagir
+
+
+## 🔧 Pistes d’amélioration
+
+* API REST pour interagir avec une app mobile
+* Ajout de WebSockets pour un fil d’actualité en temps réel
+* Refonte UI en React / Vue.js
+* Système de notifications
+* Upload avancé d’images via un stockage cloud
+* Passage à PostgreSQL + migrations avec Alembic
+
+
+## 👤 À propos
+
+Développeur passionné par la création d’applications web modernes, je conçois AlecSync pour approfondir mes compétences full-stack avec Python, Flask et SQLAlchemy.
+GitHub : **[https://github.com/AlexAlkhatib](https://github.com/AlexAlkhatib)**
+
+
+## 📄 Licence
+
+MIT License  Copyright (c) 2025 Alex Alkhatib
