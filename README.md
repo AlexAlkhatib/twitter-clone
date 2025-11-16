@@ -78,8 +78,6 @@ Le projet met en pratique le développement backend avec **Flask**, la gestion d
 ✔ Design responsive & UX avec Bootstrap
 ✔ Structuration propre du code et gestion d’un projet complet
 
-Un recruteur verra immédiatement que tu maîtrises les fondamentaux web + backend Python avec de bonnes pratiques de sécurité.
-
 
 ## 📂 Structure du projet
 
