@@ -1,4 +1,4 @@
-#💬 **AlecSync — Plateforme Sociale Interactive**
+# 💬 **AlecSync — Plateforme Sociale Interactive**
 
 **AlecSync** est une plateforme sociale interactive que j’ai développée dans un cadre **personnel**, afin d’explorer la création d’applications web full-stack permettant aux utilisateurs de partager du contenu, d’interagir entre eux et de suivre l’activité de leurs amis.
 Le projet met en pratique le développement backend avec **Flask**, la gestion de données avec **SQLAlchemy**, et l’intégration d’un frontend dynamique et responsive.
